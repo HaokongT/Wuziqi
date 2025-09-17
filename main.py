@@ -5,17 +5,15 @@ from constants import *
 from draw_utils import *
 from game_logic import check_win, is_board_full
 from ai import ai_move
-from progress_bar import ProgressBar  # 导入进度条类
+from progress_bar import ProgressBar
 
 
 def main():
-    # 获取屏幕尺寸
     pygame.init()
     screen_info = pygame.display.Info()
-    SCREEN_WIDTH = min(screen_info.current_w, 1920)  # 限制最大宽度
-    SCREEN_HEIGHT = min(screen_info.current_h, 1080)  # 限制最大高度
+    SCREEN_WIDTH = min(screen_info.current_w, 1920)
+    SCREEN_HEIGHT = min(screen_info.current_h, 1080)
 
-    # 计算网格大小 - 增大棋盘尺寸
     GRID_SIZE = min(SCREEN_HEIGHT * 0.8 // BOARD_SIZE, SCREEN_WIDTH * 0.8 // BOARD_SIZE)
     # 棋盘居中
     BOARD_PADDING = (SCREEN_WIDTH - (BOARD_SIZE - 1) * GRID_SIZE) // 2
@@ -34,18 +32,16 @@ def main():
     game_over = False
     winner = 0
     move_history = []
-    player_thinking = False  # 玩家是否在思考
-    player_timer_start = 0  # 玩家计时开始时间
-    player_time_limit = 30  # 玩家思考时间限制（秒），默认为30秒
+    player_thinking = False
+    player_timer_start = 0
+    player_time_limit = 30
 
-    # 创建玩家思考进度条
     bar_width = 300
     bar_height = 20
     bar_x = (SCREEN_WIDTH - bar_width) // 2
     bar_y = SCREEN_HEIGHT - 50
     player_progress_bar = ProgressBar(bar_x, bar_y, bar_width, bar_height, player_time_limit)
 
-    # 加载中文字体
     try:
         title_font = pygame.font.Font("simhei.ttf", 60)
         font = pygame.font.Font("simhei.ttf", 36)
@@ -138,14 +134,13 @@ def main():
                                                             title_font, font, small_font)
                     for i, rect in enumerate(time_buttons):
                         if rect.collidepoint(mouse_pos):
-                            # 设置玩家思考时间
                             if i == 0:
                                 player_time_limit = 30
                             elif i == 1:
                                 player_time_limit = 60
                             elif i == 2:
                                 player_time_limit = 120
-                            else:  # 无限时间
+                            else:
                                 player_time_limit = 0
 
                             # 更新进度条总时间（无限时间设置为0）
@@ -200,7 +195,7 @@ def main():
                                     # 更新最后一步显示
                                     last_move = move_history[-1] if move_history else None
 
-                                    # 重置玩家思考状态
+
                                     player_thinking = True
                                     player_timer_start = pygame.time.get_ticks()
                                     player_progress_bar.reset()
@@ -305,7 +300,6 @@ def main():
                                 pygame.quit()
                                 sys.exit()
                             elif text == "重玩":
-                                # 重置游戏
                                 board = np.zeros((BOARD_SIZE, BOARD_SIZE), dtype=int)
                                 last_move = None
                                 game_over = False
@@ -315,13 +309,12 @@ def main():
                                 player_progress_bar.reset()
                                 game_state = "home"
 
-        # 更新玩家思考时间（仅在有时间限制时）
         if game_state == "playing" and player_thinking and not game_over and player_time_limit > 0:
             time_up = player_progress_bar.update()
             if time_up:
                 # 玩家思考时间用完，判玩家失败
                 game_over = True
-                winner = 3 - player_color  # 对手胜利
+                winner = 3 - player_color
                 game_state = "game_over"
                 player_thinking = False
 

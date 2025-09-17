@@ -149,10 +149,6 @@ def draw_control_panel(screen, SCREEN_WIDTH, SCREEN_HEIGHT, player_color, game_o
 
     return buttons
 
-
-# 在draw_home_screen函数中找到版权信息部分，在其下方添加制作人和游玩须知按钮
-# 修改后的draw_home_screen函数如下：
-
 def draw_home_screen(screen, SCREEN_WIDTH, SCREEN_HEIGHT, STONE_RADIUS,
                      title_font=None, font=None, small_font=None):
     if title_font is None:
@@ -205,15 +201,12 @@ def draw_home_screen(screen, SCREEN_WIDTH, SCREEN_HEIGHT, STONE_RADIUS,
                            (SCREEN_WIDTH * 0.7 - i * 40, SCREEN_HEIGHT * 0.75),
                            STONE_RADIUS * 0.8)
 
-    # 绘制版权信息
     copyright = small_font.render("© 2025 五子棋", True, (50, 50, 50))
     screen.blit(copyright, (SCREEN_WIDTH / 2 - copyright.get_width() // 2, SCREEN_HEIGHT * 0.88))
 
-    # 添加制作人信息
     creator = small_font.render("制作人：浩空", True, (50, 50, 50))
     screen.blit(creator, (SCREEN_WIDTH / 2 - creator.get_width() // 2, SCREEN_HEIGHT * 0.91))
 
-    # 添加游玩须知按钮
     instructions_btn_width = 120
     instructions_btn_height = 30
     instructions_btn_rect = pygame.Rect(
@@ -224,7 +217,6 @@ def draw_home_screen(screen, SCREEN_WIDTH, SCREEN_HEIGHT, STONE_RADIUS,
     )
     buttons.append(('instructions', instructions_btn_rect))
 
-    # 按钮颜色（根据鼠标悬停状态）
     mouse_pos = pygame.mouse.get_pos()
     color = BUTTON_HOVER if instructions_btn_rect.collidepoint(mouse_pos) else BUTTON_COLOR
 
@@ -237,30 +229,24 @@ def draw_home_screen(screen, SCREEN_WIDTH, SCREEN_HEIGHT, STONE_RADIUS,
 
     return buttons
 
-
-# 新增函数：显示游玩须知对话框
 def draw_instructions_dialog(screen, SCREEN_WIDTH, SCREEN_HEIGHT, font=None, small_font=None):
     if font is None:
         font = pygame.font.Font(None, 36)
     if small_font is None:
         small_font = pygame.font.Font(None, 28)
 
-    # 创建半透明背景
     s = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
     s.fill((0, 0, 0, 128))  # 黑色半透明
     screen.blit(s, (0, 0))
 
-    # 对话框尺寸
     dialog_width = min(SCREEN_WIDTH * 0.8, 600)
     dialog_height = min(SCREEN_HEIGHT * 0.6, 400)
     dialog_x = (SCREEN_WIDTH - dialog_width) // 2
     dialog_y = (SCREEN_HEIGHT - dialog_height) // 2
 
-    # 绘制对话框
     pygame.draw.rect(screen, (240, 240, 240), (dialog_x, dialog_y, dialog_width, dialog_height), border_radius=10)
     pygame.draw.rect(screen, GOLD, (dialog_x, dialog_y, dialog_width, dialog_height), 3, border_radius=10)
 
-    # 标题
     title = font.render("游玩须知", True, (25, 25, 112))
     screen.blit(title, (dialog_x + dialog_width // 2 - title.get_width() // 2, dialog_y + 20))
 
@@ -281,7 +267,6 @@ def draw_instructions_dialog(screen, SCREEN_WIDTH, SCREEN_HEIGHT, font=None, sma
         screen.blit(text, (dialog_x + dialog_width // 2 - text.get_width() // 2, content_y))
         content_y += 30
 
-    # 确定按钮
     ok_btn_width = 100
     ok_btn_height = 40
     ok_btn_rect = pygame.Rect(
@@ -291,7 +276,6 @@ def draw_instructions_dialog(screen, SCREEN_WIDTH, SCREEN_HEIGHT, font=None, sma
         ok_btn_height
     )
 
-    # 按钮颜色（根据鼠标悬停状态）
     mouse_pos = pygame.mouse.get_pos()
     color = BUTTON_HOVER if ok_btn_rect.collidepoint(mouse_pos) else BUTTON_COLOR
 
@@ -314,17 +298,14 @@ def draw_time_setting_screen(screen, SCREEN_WIDTH, SCREEN_HEIGHT,
     if small_font is None:
         small_font = pygame.font.Font(None, 28)
 
-    # 绘制背景
     screen.fill(SKY_BLUE)
 
-    # 绘制标题
-    title = title_font.render("AI思考时间", True, GOLD)
+    title = title_font.render("选择您的思考时间", True, GOLD)
     screen.blit(title, (SCREEN_WIDTH / 2 - title.get_width() // 2, SCREEN_HEIGHT * 0.15))
 
     subtitle = font.render("选择时间限制", True, WHITE)
     screen.blit(subtitle, (SCREEN_WIDTH / 2 - subtitle.get_width() // 2, SCREEN_HEIGHT * 0.25))
 
-    # 绘制时间选择按钮
     buttons = []
     button_width = min(300, SCREEN_WIDTH * 0.6)
     button_height = min(60, SCREEN_HEIGHT * 0.1)
@@ -335,7 +316,6 @@ def draw_time_setting_screen(screen, SCREEN_WIDTH, SCREEN_HEIGHT,
         button_rect = pygame.Rect(SCREEN_WIDTH / 2 - button_width / 2, button_y, button_width, button_height)
         buttons.append(button_rect)
 
-        # 按钮颜色（根据鼠标悬停状态）
         mouse_pos = pygame.mouse.get_pos()
         color = BUTTON_HOVER if button_rect.collidepoint(mouse_pos) else BUTTON_COLOR
 

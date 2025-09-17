@@ -1,5 +1,3 @@
-# 游戏逻辑
-
 import numpy as np
 import math
 
@@ -18,13 +16,12 @@ def check_win(board, player):
                 continue
 
             for dir_pair in directions:
-                count = 1  # 当前位置已经有一个棋子
+                count = 1
 
                 # 检查两个相反的方向
                 for dx, dy in dir_pair:
                     nx, ny = x, y
 
-                    # 沿着一个方向检查
                     for _ in range(4):
                         nx += dx
                         ny += dy
