@@ -204,7 +204,7 @@ def draw_home_screen(screen, SCREEN_WIDTH, SCREEN_HEIGHT, STONE_RADIUS,
     copyright = small_font.render("© 2025 五子棋", True, (50, 50, 50))
     screen.blit(copyright, (SCREEN_WIDTH / 2 - copyright.get_width() // 2, SCREEN_HEIGHT * 0.88))
 
-    creator = small_font.render("制作人：聆听风的声音", True, (50, 50, 50))
+    creator = small_font.render("制作人：浩空", True, (50, 50, 50))
     screen.blit(creator, (SCREEN_WIDTH / 2 - creator.get_width() // 2, SCREEN_HEIGHT * 0.91))
 
     instructions_btn_width = 120
