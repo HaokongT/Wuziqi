@@ -25,7 +25,7 @@ def main():
     pygame.display.set_caption("五子棋 - 竹林幽境")
 
     # 游戏状态
-    game_state = "home"  # home, time_setting, playing, game_over, instructions
+    game_state = "home"  # home, difficulty_setting, time_setting, playing, game_over, instructions
     player_color = 1  # 1: 黑棋, 2: 白棋
     board = np.zeros((BOARD_SIZE, BOARD_SIZE), dtype=int)
     last_move = None
@@ -35,6 +35,7 @@ def main():
     player_thinking = False
     player_timer_start = 0
     player_time_limit = 30
+    ai_difficulty = 5  # 默认难度为困难
 
     bar_width = 300
     bar_height = 20
@@ -116,10 +117,10 @@ def main():
                         if rect.collidepoint(mouse_pos):
                             if btn_type == "black":
                                 player_color = 1
-                                game_state = "time_setting"
+                                game_state = "difficulty_setting"
                             elif btn_type == "white":
                                 player_color = 2
-                                game_state = "time_setting"
+                                game_state = "difficulty_setting"
                             elif btn_type == "instructions":
                                 game_state = "instructions"
 
@@ -128,6 +129,20 @@ def main():
                     ok_btn_rect = draw_instructions_dialog(screen, SCREEN_WIDTH, SCREEN_HEIGHT, font, small_font)
                     if ok_btn_rect.collidepoint(mouse_pos):
                         game_state = "home"
+
+                elif game_state == "difficulty_setting":
+                    difficulty_buttons = draw_difficulty_screen(screen, SCREEN_WIDTH, SCREEN_HEIGHT,
+                                                                title_font, font, small_font)
+                    for i, rect in enumerate(difficulty_buttons):
+                        if rect.collidepoint(mouse_pos):
+                            if i == 0:
+                                ai_difficulty = 3  # 简单
+                            elif i == 1:
+                                ai_difficulty = 4  # 正常
+                            elif i == 2:
+                                ai_difficulty = 5  # 困难
+
+                            game_state = "time_setting"
 
                 elif game_state == "time_setting":
                     time_buttons = draw_time_setting_screen(screen, SCREEN_WIDTH, SCREEN_HEIGHT,
@@ -194,7 +209,6 @@ def main():
 
                                     # 更新最后一步显示
                                     last_move = move_history[-1] if move_history else None
-
 
                                     player_thinking = True
                                     player_timer_start = pygame.time.get_ticks()
@@ -267,7 +281,7 @@ def main():
                                     else:
                                         # AI下棋
                                         ai_player = 3 - player_color
-                                        move = ai_move(board, ai_player)
+                                        move = ai_move(board, ai_player, ai_difficulty)
                                         if move:
                                             x, y = move
                                             board[y][x] = ai_player
@@ -330,6 +344,9 @@ def main():
                              title_font, font, small_font)
             # 绘制游玩须知对话框
             draw_instructions_dialog(screen, SCREEN_WIDTH, SCREEN_HEIGHT, font, small_font)
+        elif game_state == "difficulty_setting":
+            difficulty_buttons = draw_difficulty_screen(screen, SCREEN_WIDTH, SCREEN_HEIGHT,
+                                                        title_font, font, small_font)
         elif game_state == "time_setting":
             time_buttons = draw_time_setting_screen(screen, SCREEN_WIDTH, SCREEN_HEIGHT,
                                                     title_font, font, small_font)

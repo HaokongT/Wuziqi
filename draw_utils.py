@@ -204,7 +204,7 @@ def draw_home_screen(screen, SCREEN_WIDTH, SCREEN_HEIGHT, STONE_RADIUS,
     copyright = small_font.render("© 2025 五子棋", True, (50, 50, 50))
     screen.blit(copyright, (SCREEN_WIDTH / 2 - copyright.get_width() // 2, SCREEN_HEIGHT * 0.88))
 
-    creator = small_font.render("制作人：浩空", True, (50, 50, 50))
+    creator = small_font.render("制作人：聆听风的声音", True, (50, 50, 50))
     screen.blit(creator, (SCREEN_WIDTH / 2 - creator.get_width() // 2, SCREEN_HEIGHT * 0.91))
 
     instructions_btn_width = 120
@@ -313,6 +313,47 @@ def draw_time_setting_screen(screen, SCREEN_WIDTH, SCREEN_HEIGHT,
     time_options = ["30秒", "1分钟", "2分钟", "无限时间"]
 
     for i, option in enumerate(time_options):
+        button_rect = pygame.Rect(SCREEN_WIDTH / 2 - button_width / 2, button_y, button_width, button_height)
+        buttons.append(button_rect)
+
+        mouse_pos = pygame.mouse.get_pos()
+        color = BUTTON_HOVER if button_rect.collidepoint(mouse_pos) else BUTTON_COLOR
+
+        pygame.draw.rect(screen, color, button_rect, border_radius=10)
+        pygame.draw.rect(screen, GOLD, button_rect, 3, border_radius=10)
+
+        text = font.render(option, True, TEXT_COLOR)
+        screen.blit(text, (button_rect.centerx - text.get_width() // 2,
+                           button_rect.centery - text.get_height() // 2))
+
+        button_y += button_height + 15
+
+    return buttons
+
+def draw_difficulty_screen(screen, SCREEN_WIDTH, SCREEN_HEIGHT,
+                           title_font=None, font=None, small_font=None):
+    if title_font is None:
+        title_font = pygame.font.Font(None, 60)
+    if font is None:
+        font = pygame.font.Font(None, 36)
+    if small_font is None:
+        small_font = pygame.font.Font(None, 28)
+
+    screen.fill(SKY_BLUE)
+
+    title = title_font.render("选择AI难度", True, GOLD)
+    screen.blit(title, (SCREEN_WIDTH / 2 - title.get_width() // 2, SCREEN_HEIGHT * 0.15))
+
+    subtitle = font.render("难度越高，AI思考越深", True, WHITE)
+    screen.blit(subtitle, (SCREEN_WIDTH / 2 - subtitle.get_width() // 2, SCREEN_HEIGHT * 0.25))
+
+    buttons = []
+    button_width = min(300, SCREEN_WIDTH * 0.6)
+    button_height = min(60, SCREEN_HEIGHT * 0.1)
+    button_y = SCREEN_HEIGHT * 0.35
+    difficulty_options = ["简单", "正常", "困难"]
+
+    for i, option in enumerate(difficulty_options):
         button_rect = pygame.Rect(SCREEN_WIDTH / 2 - button_width / 2, button_y, button_width, button_height)
         buttons.append(button_rect)
 
