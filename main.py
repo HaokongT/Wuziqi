@@ -6,7 +6,7 @@ from draw_utils import *
 from game_logic import check_win, is_board_full
 from ai import ai_move
 from progress_bar import ProgressBar
-
+import time
 
 def main():
     pygame.init()
@@ -35,7 +35,10 @@ def main():
     player_thinking = False
     player_timer_start = 0
     player_time_limit = 30
-    ai_difficulty = 5  # 默认难度为困难
+    ai_difficulty = 0  # 默认难度为困难
+
+    debug_enabled = False
+    last_debug_output = 0
 
     bar_width = 300
     bar_height = 20
@@ -322,6 +325,22 @@ def main():
                                 player_thinking = False
                                 player_progress_bar.reset()
                                 game_state = "home"
+
+        current_time = time.time()
+        if debug_enabled and current_time - last_debug_output > 1.0:  # 每秒输出一次
+            last_debug_output = current_time
+            # 输出游戏状态信息到控制台
+            print("\n=== 游戏调试信息 ===")
+            print(f"游戏状态: {game_state}")
+            print(f"玩家颜色: {'黑棋' if player_color == 1 else '白棋'}")
+            print(f"棋盘状态: {np.count_nonzero(board == 1)} 黑棋, {np.count_nonzero(board == 2)} 白棋")
+            print(f"最后一步: {last_move}")
+            print(f"步数历史: {len(move_history)} 步")
+            print(f"游戏结束: {game_over}")
+            print(f"胜利者: {winner}")
+            print(f"时间限制: {player_time_limit} 秒")
+            print(f"游戏难度:{ai_difficulty}")
+            print("==================\n")
 
         if game_state == "playing" and player_thinking and not game_over and player_time_limit > 0:
             time_up = player_progress_bar.update()
